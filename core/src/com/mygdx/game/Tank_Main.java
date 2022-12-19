@@ -35,7 +35,7 @@ public class Tank_Main extends ApplicationAdapter implements Screen {
         bg=new Texture(Gdx.files.internal("Basics/Blue_Bg.png"));
         purple_bg=new Texture(Gdx.files.internal("Basics/Purple.png"));
         new_game=new Texture(Gdx.files.internal("Basics/New_Game.png"));
-        tank_child=new Buttons("Basics/Tank_Baby.png",40, 100, 300, 400);
+        tank_child=new Buttons("Basics/Abrams_Tank.png",40, 125, 330, 250);
         logo=new Texture(Gdx.files.internal("Basics/Logo_Bland.png"));
         camera=new OrthographicCamera();
         Vs_Computer=new Buttons("Basics/New_Game.png",  550, 350, 150, 50);

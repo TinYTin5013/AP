@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.w3c.dom.Text;
 import java.awt.*;
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Rectangle;
 public class New_Game extends ApplicationAdapter implements Screen {
     private Texture bg;
@@ -32,21 +34,25 @@ public class New_Game extends ApplicationAdapter implements Screen {
     private Clickables Play;
     private Stage stage;
     private Clickables arrow;
+    private Clickables reverse_arrow;
+    private int i;
     private MyGdxGame parent;
     public New_Game(MyGdxGame parent){
         this.parent=parent;
         batch=new SpriteBatch();
         stage=new Stage();
+        i=0;
         bg=new Texture(Gdx.files.internal("Basics/Blue_Bg.png"));
-        arrow=new Buttons("Basics/Arrow.png", 690, 240, 64,64);
+        arrow=new Buttons("Basics/Arrow.png", 690, 260, 100,100);
+        reverse_arrow=new Buttons("Basics/Reverse_Arrow.png", 450, 260, 100,100);
         purple_bg=new Texture(Gdx.files.internal("Basics/Purple.png"));
         logo=new Texture(Gdx.files.internal("Basics/Logo_Bland.png"));
         tank_choice=new Texture(Gdx.files.internal("Basics/Tank_Choice.png"));
-        tank_child=new Buttons("Basics/Tank_Baby.png", (225-150), 50, 300, 400);
+        tank_child=new Buttons("Basics/Abrams_Tank.png", 40, 125, 330, 250);
         current=new Texture(Gdx.files.internal("Basics/Current.png"));
         camera=new OrthographicCamera();
         Play=new Buttons("Basics/Play.png",((450+800)/2) -110, 100, 250, 100);
-//        Back=new Buttons(Gdx.files.internal("Basics/BackButton.png"));
+        Back=new Buttons("Basics/BackButton.png",0, 510, 80, 80);
         abrams=new Texture(Gdx.files.internal("Basics/Abrams.png"));
         parent.stage.addActor((Actor) Play);
         parent.stage.addActor((Actor) arrow);
@@ -69,11 +75,21 @@ public class New_Game extends ApplicationAdapter implements Screen {
         parent.batch.draw(bg, 0,0, 450, 600);
         parent.batch.draw(purple_bg, 450,0, 350, 600);
         parent.batch.draw(tank_choice, ((450+800)/2)-150, 350, 300, 100);
-        tank_child.draw(parent.batch, 1f);
         parent.batch.draw(abrams, 225-125, 425, 250, 100);
         parent.batch.draw(current, ((450+800)/2)-75, 250, 125, 100);
+        Back.draw(parent.batch, 1f);
         Play.draw(parent.batch, 1f);
-        arrow.draw(parent.batch,1f);
+        try {
+            Tank tim = (Tank) parent.tankList.next();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        if(i<4) {
+            arrow.draw(parent.batch, 1f);
+        }
+        if(i>0){
+            reverse_arrow.draw(parent.batch, 1f);
+        }
         parent.batch.end();
         parent.stage.act(Gdx.graphics.getDeltaTime());
         if(Gdx.input.isTouched()){
@@ -82,23 +98,41 @@ public class New_Game extends ApplicationAdapter implements Screen {
             touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             int timX=(int)touch.x;
             int timY=600-(int)touch.y;
-            if(timX>=0 && timX<=100 && timY>=510 && timY<=640){
-//                bg.dispose();
-//                purple_bg.dispose();
-//                logo.dispose();
-//                tank_choice.dispose();
-//                abrams.dispose();
-//                tank_child.dispose();
-//                current.dispose();
-//                Back.dispose();
-//                Play.dispose();
-//                arrow.dispose();
-//                try{
-//                    Thread.sleep(200);
-//                }catch(Exception e){
-//                    e.printStackTrace();
-//                }
-//                parent.setScreen(new Tank_Main(parent));
+            if(arrow.isClicked(timX,timY)){
+                i++;
+                try{
+                    Thread.sleep(350);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                if(i>=4){
+                    i=4;
+                }
+            }else if(reverse_arrow.isClicked(timX, timY)){
+                i--;
+                try{
+                    Thread.sleep(350);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                if(i<0){
+                    i=0;
+                }
+            }
+            else if(Back.isClicked(timX, timY)){
+                bg.dispose();
+                purple_bg.dispose();
+                logo.dispose();
+                tank_choice.dispose();
+                abrams.dispose();
+                try{
+                    Thread.sleep(200);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                parent.stage.dispose();
+                parent.stage=new Stage();
+                parent.setScreen(new Tank_Main(parent));
             }else if(timX>=((450+800)/2) -110 && timX<=((450+800)/2) -110+250 && timY>=100 && timY<=200){
 //                bg.dispose();
 //                purple_bg.dispose();

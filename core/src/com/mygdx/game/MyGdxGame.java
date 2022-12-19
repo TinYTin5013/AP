@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import jdk.internal.icu.text.UnicodeSet;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 class Weapon{}
 class Buttons extends Actor implements Clickables{
@@ -66,6 +70,13 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 	private int health;
 	private double angle;
 	private int run;
+	public Tank(String name, int x, int y, int width, int height){
+		this.name=name;
+		this.x=x;
+		this.y=y;
+		this.width=width;
+		this.height=height;
+	}
 
 	@Override
 	public boolean isClicked(int x, int y) {
@@ -84,6 +95,16 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 	@Override
 	public void damage() {
 
+	}
+
+	@Override
+	public void setX(int x) {
+		this.x=x;
+	}
+
+	@Override
+	public void setY(int y) {
+		this.y=y;
 	}
 
 	public void draw(SpriteBatch batch, float delta){
@@ -114,19 +135,31 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 		return height;
 	}
 
-	public void setX(int x) {this.x = x;}
-	public void setY(int y) {this.y = y;}
+	public void setAll(int X, int Y, int width, int height){
+		this.x=X;
+		this.y=Y;
+		this.width=width;
+		this.height=height;
+	}
+
+	public void setHealth(int health) {this.health = health;}
+
 	@Override
 	public void run() {
 
 	}
 }
-public class MyGdxGame extends Game {
+
+public class MyGdxGame extends Game implements Iterable{
 	public SpriteBatch batch;
 	public Stage stage;
+	private ArrayList<Tank> tankBoy;
+	public Iterator tankList;
 	@Override
 	public void create() {
 		Gdx.graphics.setWindowedMode(800,600);
+		tankBoy=new ArrayList<Tank>();
+		this.initialiseTank();
 		batch=new SpriteBatch();
 		stage=new Stage();
 		this.setScreen(new Tank_Intro(this));
@@ -134,8 +167,26 @@ public class MyGdxGame extends Game {
 	public void render(){
 		super.render();
 	}
+	public void initialiseTank(){
+		Tank tank=new Tank("Basics/Abrams_Tank.png", 0,0,0,0);
+
+		tankBoy.add(tank);
+		tank=new Tank("Basics/Atomic_Tank.png", 0,0,0,0);
+		tankBoy.add(tank);
+		tank=new Tank("Basics/Mark_Tank.png", 0,0,0,0);
+		tankBoy.add(tank);
+		tank=new Tank("Basics/Frost_Tank.png", 0,0,0,0);
+		tankBoy.add(tank);
+		tank=new Tank("Basics/Helios_Tank.png", 0,0,0,0);
+		tankBoy.add(tank);
+	}
 	public void dispose(){
 		batch.dispose();
 		stage.dispose();
+	}
+
+	@Override
+	public Iterator createIterator() {
+		return tankBoy.iterator();
 	}
 }
