@@ -21,7 +21,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Tank_Main extends ApplicationAdapter implements Screen {
     private Texture bg;
     private Texture new_game;
-    private Texture tank_child;
+    private Clickables tank_child;
     private OrthographicCamera camera;
     private Texture purple_bg;
     private Texture logo;
@@ -35,7 +35,7 @@ public class Tank_Main extends ApplicationAdapter implements Screen {
         bg=new Texture(Gdx.files.internal("Basics/Blue_Bg.png"));
         purple_bg=new Texture(Gdx.files.internal("Basics/Purple.png"));
         new_game=new Texture(Gdx.files.internal("Basics/New_Game.png"));
-        tank_child=new Texture(Gdx.files.internal("Basics/Tank_Baby.png"));
+        tank_child=new Buttons("Basics/Tank_Baby.png",40, 100, 300, 400);
         logo=new Texture(Gdx.files.internal("Basics/Logo_Bland.png"));
         camera=new OrthographicCamera();
         Vs_Computer=new Buttons("Basics/New_Game.png",  550, 350, 150, 50);
@@ -46,12 +46,45 @@ public class Tank_Main extends ApplicationAdapter implements Screen {
         parent.stage.addActor((Actor) Vs_Friend);
         parent.stage.addActor((Actor) Settings);
         parent.stage.addActor((Actor) Back);
+        parent.stage.addActor((Actor) tank_child);
         Gdx.input.setInputProcessor(parent.stage);
     }
-    public void select(){}
+    public void back(){
+        bg.dispose();
+        purple_bg.dispose();
+        new_game.dispose();
+        logo.dispose();
+        parent.stage.dispose();
+        try{
+            Thread.sleep(200);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        parent.stage=new Stage();
+        parent.setScreen(new Tank_Intro(parent));
+    }
     public void fire(){}
-    public void openNewGame(){}
-    public void openLoadGame(){}
+    public void openNewGame(){
+        bg.dispose();
+        purple_bg.dispose();
+        new_game.dispose();
+        logo.dispose();
+        parent.stage.dispose();
+        parent.stage=new Stage();
+        parent.setScreen(new New_Game(parent));
+    }
+    public void openLoadGame(){
+//                bg.dispose();
+//                purple_bg.dispose();
+//                new_game.dispose();
+//                tank_child.dispose();
+//                logo.dispose();
+//                Vs_Computer.dispose();
+//                Vs_Friend.dispose();
+//                Back.dispose();
+//                parent.stage=new Stage();
+//                parent.setScreen(new Load_Game(parent));
+    }
     public void openSettings(){}
     public void render(){
 
@@ -67,7 +100,7 @@ public class Tank_Main extends ApplicationAdapter implements Screen {
         camera.update();
         parent.batch.begin();
         parent.batch.draw(bg, 0,0, 400, 600);
-        parent.batch.draw(tank_child, 40, 100, 300, 400);
+        tank_child.draw(parent.batch, 1f);
         parent.batch.draw(purple_bg, 400,0, 400, 600);
         parent.batch.draw(logo, (400)-125, 400, 250, 150);
         Vs_Computer.draw(parent.batch, 1f);
@@ -85,39 +118,11 @@ public class Tank_Main extends ApplicationAdapter implements Screen {
             System.out.println(timY);
             System.out.println(Back.getY());
             if(Back.isClicked(timX, timY)){
-                bg.dispose();
-                purple_bg.dispose();
-                new_game.dispose();
-                tank_child.dispose();
-                logo.dispose();
-                parent.stage.dispose();
-                try{
-                    Thread.sleep(200);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                parent.stage=new Stage();
-                parent.setScreen(new Tank_Intro(parent));
+                this.back();
             }else if(Vs_Computer.isClicked(timX, timY)){
-                bg.dispose();
-                purple_bg.dispose();
-                new_game.dispose();
-                tank_child.dispose();
-                logo.dispose();
-                parent.stage.dispose();
-                parent.stage=new Stage();
-                parent.setScreen(new New_Game(parent));
+                this.openNewGame();
             }else if(Vs_Friend.isClicked(timX, timY)){
-//                bg.dispose();
-//                purple_bg.dispose();
-//                new_game.dispose();
-//                tank_child.dispose();
-//                logo.dispose();
-//                Vs_Computer.dispose();
-//                Vs_Friend.dispose();
-//                Back.dispose();
-//                parent.stage=new Stage();
-//                parent.setScreen(new Load_Game(parent));
+                this.openLoadGame();
             }
 
         }

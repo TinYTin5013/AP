@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -25,13 +26,11 @@ public class New_Game extends ApplicationAdapter implements Screen {
     private Texture tank_choice;
     private OrthographicCamera camera;
     private Texture abrams;
-    private Texture tank_child;
+    private Clickables tank_child;
     private Texture current;
     private Buttons Back;
-    private Buttons Play;
+    private Clickables Play;
     private Stage stage;
-    private TextureRegion region;
-    private TextureRegionDrawable drawable;
     private Clickables arrow;
     private MyGdxGame parent;
     public New_Game(MyGdxGame parent){
@@ -39,18 +38,18 @@ public class New_Game extends ApplicationAdapter implements Screen {
         batch=new SpriteBatch();
         stage=new Stage();
         bg=new Texture(Gdx.files.internal("Basics/Blue_Bg.png"));
-//        arrow=new Texture(Gdx.files.internal("Basics/Arrow.png"));
+        arrow=new Buttons("Basics/Arrow.png", 690, 240, 64,64);
         purple_bg=new Texture(Gdx.files.internal("Basics/Purple.png"));
         logo=new Texture(Gdx.files.internal("Basics/Logo_Bland.png"));
         tank_choice=new Texture(Gdx.files.internal("Basics/Tank_Choice.png"));
-        tank_child=new Texture(Gdx.files.internal("Basics/Tank_Baby.png"));
+        tank_child=new Buttons("Basics/Tank_Baby.png", (225-150), 50, 300, 400);
         current=new Texture(Gdx.files.internal("Basics/Current.png"));
         camera=new OrthographicCamera();
         Play=new Buttons("Basics/Play.png",((450+800)/2) -110, 100, 250, 100);
 //        Back=new Buttons(Gdx.files.internal("Basics/BackButton.png"));
         abrams=new Texture(Gdx.files.internal("Basics/Abrams.png"));
-        drawable=new TextureRegionDrawable(region);
-        parent.stage.addActor(Play);
+        parent.stage.addActor((Actor) Play);
+        parent.stage.addActor((Actor) arrow);
         Gdx.input.setInputProcessor(stage);
     }
     public void previous(){}
@@ -70,13 +69,13 @@ public class New_Game extends ApplicationAdapter implements Screen {
         parent.batch.draw(bg, 0,0, 450, 600);
         parent.batch.draw(purple_bg, 450,0, 350, 600);
         parent.batch.draw(tank_choice, ((450+800)/2)-150, 350, 300, 100);
-        parent.batch.draw(tank_child, (225-150), 50, 300, 400);
+        tank_child.draw(parent.batch, 1f);
         parent.batch.draw(abrams, 225-125, 425, 250, 100);
         parent.batch.draw(current, ((450+800)/2)-75, 250, 125, 100);
         Play.draw(parent.batch, 1f);
+        arrow.draw(parent.batch,1f);
         parent.batch.end();
-        //parent.stage.act(Gdx.graphics.getDeltaTime());
-        parent.stage.draw();
+        parent.stage.act(Gdx.graphics.getDeltaTime());
         if(Gdx.input.isTouched()){
             Vector3 touch=new Vector3();
             camera.unproject(touch);
