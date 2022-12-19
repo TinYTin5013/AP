@@ -18,6 +18,7 @@ import com.sun.org.apache.xpath.internal.operations.Or;
 import org.w3c.dom.Text;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import com.badlogic.gdx.math.Rectangle;
 public class New_Game extends ApplicationAdapter implements Screen {
@@ -32,6 +33,7 @@ public class New_Game extends ApplicationAdapter implements Screen {
     private Texture current;
     private Buttons Back;
     private Clickables Play;
+    private Tank tim;
     private Stage stage;
     private Clickables arrow;
     private Clickables reverse_arrow;
@@ -41,7 +43,7 @@ public class New_Game extends ApplicationAdapter implements Screen {
         this.parent=parent;
         batch=new SpriteBatch();
         stage=new Stage();
-        i=0;
+        int i=0;
         bg=new Texture(Gdx.files.internal("Basics/Blue_Bg.png"));
         arrow=new Buttons("Basics/Arrow.png", 690, 260, 100,100);
         reverse_arrow=new Buttons("Basics/Reverse_Arrow.png", 450, 260, 100,100);
@@ -79,11 +81,8 @@ public class New_Game extends ApplicationAdapter implements Screen {
         parent.batch.draw(current, ((450+800)/2)-75, 250, 125, 100);
         Back.draw(parent.batch, 1f);
         Play.draw(parent.batch, 1f);
-        try {
-            Tank tim = (Tank) parent.tankList.next();
-        }catch (Exception e){
-            System.out.println(e);
-        }
+        parent.tankList.get(i).setAll(40, 125, 330, 250);
+        parent.tankList.get(i).draw(parent.batch, 1f);
         if(i<4) {
             arrow.draw(parent.batch, 1f);
         }
@@ -105,18 +104,18 @@ public class New_Game extends ApplicationAdapter implements Screen {
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                if(i>=4){
+                if(i>=5){
                     i=4;
                 }
             }else if(reverse_arrow.isClicked(timX, timY)){
                 i--;
+                if(i<0){
+                    i=0;
+                }
                 try{
                     Thread.sleep(350);
                 }catch (Exception e){
                     e.printStackTrace();
-                }
-                if(i<0){
-                    i=0;
                 }
             }
             else if(Back.isClicked(timX, timY)){

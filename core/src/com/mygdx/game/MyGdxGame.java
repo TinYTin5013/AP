@@ -10,6 +10,7 @@ import jdk.internal.icu.text.UnicodeSet;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 class Weapon{}
 class Buttons extends Actor implements Clickables{
@@ -150,15 +151,14 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 	}
 }
 
-public class MyGdxGame extends Game implements Iterable{
+public class MyGdxGame extends Game{
 	public SpriteBatch batch;
 	public Stage stage;
-	private ArrayList<Tank> tankBoy;
-	public Iterator tankList;
+	public static ArrayList<Tank> tankList;
 	@Override
 	public void create() {
 		Gdx.graphics.setWindowedMode(800,600);
-		tankBoy=new ArrayList<Tank>();
+		tankList=new ArrayList<Tank>();
 		this.initialiseTank();
 		batch=new SpriteBatch();
 		stage=new Stage();
@@ -170,23 +170,18 @@ public class MyGdxGame extends Game implements Iterable{
 	public void initialiseTank(){
 		Tank tank=new Tank("Basics/Abrams_Tank.png", 0,0,0,0);
 
-		tankBoy.add(tank);
+		tankList.add(tank);
 		tank=new Tank("Basics/Atomic_Tank.png", 0,0,0,0);
-		tankBoy.add(tank);
+		tankList.add(tank);
 		tank=new Tank("Basics/Mark_Tank.png", 0,0,0,0);
-		tankBoy.add(tank);
+		tankList.add(tank);
 		tank=new Tank("Basics/Frost_Tank.png", 0,0,0,0);
-		tankBoy.add(tank);
+		tankList.add(tank);
 		tank=new Tank("Basics/Helios_Tank.png", 0,0,0,0);
-		tankBoy.add(tank);
+		tankList.add(tank);
 	}
 	public void dispose(){
 		batch.dispose();
 		stage.dispose();
-	}
-
-	@Override
-	public Iterator createIterator() {
-		return tankBoy.iterator();
 	}
 }
