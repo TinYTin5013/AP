@@ -77,6 +77,7 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 		this.y=y;
 		this.width=width;
 		this.height=height;
+		this.health=100;
 	}
 
 	@Override
@@ -150,9 +151,72 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 
 	}
 }
+interface GameStuff{
+	public void decrease(int health);
+}
+class Health implements GameStuff{
+	private String name;
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+	public Health(String name, int x, int y, int width, int height){
+		this.name=name;
+		this.x=x;
+		this.y=y;
+		this.width=width;
+		this.height=height;
+	}
+	@Override
+	public void decrease(int health) {}
+	public void draw(SpriteBatch batch, float delta){
+		Texture texture=new Texture(Gdx.files.internal(this.name));
+		batch.draw(texture, this.x, this.y, this.width, this.height);
+	}
+}
+class Healthbar extends Actor implements Characters{
+	private Health healthbar;
+	@Override
+	public void move(int x, int y) {
+		healthbar.decrease(x);
+	}
+	public void setHealthbar(Health healthbar) {
+		this.healthbar = healthbar;
+	}
 
+	public Health getHealthbar() {
+		return healthbar;
+	}
+
+	@Override
+	public void aim(int x, int y) {
+
+	}
+
+	@Override
+	public void damage() {
+
+	}
+
+	@Override
+	public void setX(int x) {
+
+	}
+
+	@Override
+	public void setY(int y) {
+
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+}
 public class MyGdxGame extends Game{
 	public SpriteBatch batch;
+	public static Characters player_One;
+	public static Characters player_Two;
 	public Stage stage;
 	public static ArrayList<Tank> tankList;
 	@Override

@@ -124,7 +124,6 @@ public class Tank_Main extends ApplicationAdapter implements Screen {
             }else if(Vs_Friend.isClicked(timX, timY)){
                 this.openLoadGame();
             }
-
         }
     }
 

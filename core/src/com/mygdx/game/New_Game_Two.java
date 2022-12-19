@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import com.badlogic.gdx.math.Rectangle;
-public class New_Game extends ApplicationAdapter implements Screen {
+public class New_Game_Two extends ApplicationAdapter implements Screen {
     private Texture bg;
     private Texture purple_bg;
     private SpriteBatch batch;
@@ -39,7 +39,7 @@ public class New_Game extends ApplicationAdapter implements Screen {
     private Clickables reverse_arrow;
     private int i;
     private MyGdxGame parent;
-    public New_Game(MyGdxGame parent){
+    public New_Game_Two(MyGdxGame parent){
         this.parent=parent;
         batch=new SpriteBatch();
         stage=new Stage();
@@ -138,15 +138,12 @@ public class New_Game extends ApplicationAdapter implements Screen {
                 logo.dispose();
                 tank_choice.dispose();
                 abrams.dispose();
-                parent.player_One=new Tank_Creator().getInstance().createCharacters(parent.tankList.get(i).getName(), 1);
+                parent.player_Two=new Tank_Creator().getInstance().createCharacters(parent.tankList.get(i).getName(), 2);
+                System.out.println(parent.player_One.getName());
+                System.out.println(parent.player_Two.getName());
                 parent.stage.dispose();
                 parent.stage=new Stage();
-                try{
-                    Thread.sleep(200);
-                }catch (Exception e){
-                    System.out.println(e);
-                }
-                parent.setScreen(new New_Game_Two(parent));
+                parent.setScreen(new Ground(parent));
             }
         }
     }
