@@ -6,4 +6,5 @@ public interface Characters {
     public void damage();
     public void setX(int x);
     public void setY(int y);
+    public String getName();
 }
