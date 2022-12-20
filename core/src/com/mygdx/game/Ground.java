@@ -26,14 +26,14 @@ public class Ground extends ApplicationAdapter implements Screen {
     private final MyGdxGame parent;
     public Ground(MyGdxGame parent){
         this.parent=parent;
-        Texture background=new Texture(Gdx.files.internal("Background.png"));
-        Texture versus=new Texture(Gdx.files.internal("Versus.png"));
-        Texture ground=new Texture(Gdx.files.internal("Terrain.png"));
+        Texture background=new Texture(Gdx.files.internal("Basics/Background.png"));
+        Texture versus=new Texture(Gdx.files.internal("Basics/Versus.png"));
+        Texture ground=new Texture(Gdx.files.internal("Basics/Terrain.png"));
         Healthbar health_One=new Healthbar();
-        health_One.setHealthbar(new Health("Health_One.png", 140, 500, 180, 70));
+        health_One.setHealthbar(new Health("Basics/Health_One.png", 140, 500, 180, 70));
         Healthbar health_Two=new Healthbar();
-        health_Two.setHealthbar(new Health("Health_Two.png", 600-135, 500, 180, 70));
-        Pause=new Buttons("Pause.png", 50, 510, 50, 50);
+        health_Two.setHealthbar(new Health("Basics/Health_Two.png", 600-135, 500, 180, 70));
+        Pause=new Buttons("Basics/Pause.png", 50, 510, 50, 50);
         camera=new OrthographicCamera();
         parent.stage.addActor(player_One);
         parent.stage.addActor(player_Two);

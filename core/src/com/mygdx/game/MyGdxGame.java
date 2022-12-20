@@ -168,7 +168,7 @@ class Health implements GameStuff{
 		this.height=height;
 	}
 	@Override
-	public void decrease(int health) {}
+	public void decrease(int health) {};
 	public void draw(SpriteBatch batch, float delta){
 		Texture texture=new Texture(Gdx.files.internal(this.name));
 		batch.draw(texture, this.x, this.y, this.width, this.height);
