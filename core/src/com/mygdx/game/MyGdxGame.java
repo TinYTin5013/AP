@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,7 +13,63 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-class Weapon{}
+class Weapon extends Actor implements Characters{
+	private String name;
+	private int x;
+	private int y;
+	private int width;
+	private int height;
+	private int damage;
+	public Weapon(String name, int x, int y, int width, int height){
+		this.name=name;
+		this.x=x;
+		this.y=y;
+		this.width=width;
+		this.height=height;
+	}
+	@Override
+	public void move(int x, int y) {
+
+	}
+
+	@Override
+	public void aim(int x, int y) {
+
+	}
+
+	@Override
+	public void damage() {
+
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
+	@Override
+	public void setX(int x) {
+
+	}
+
+	@Override
+	public void setY(int y) {
+
+	}
+
+	@Override
+	public void setAll(int X, int Y, int width, int height) {
+		this.x=X;
+		this.y=Y;
+		this.width=width;
+		this.height=height;
+	}
+
+	@Override
+	public void draw(SpriteBatch batch, float delta) {
+		Texture texture=new Texture(Gdx.files.internal(this.name));
+		batch.draw(texture, this.x, this.y, this.width, this.height);
+	}
+}
 class Buttons extends Actor implements Clickables{
 	String name;
 	int x;
@@ -84,8 +141,15 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 	public boolean isClicked(int x, int y) {
 		return false;
 	}
-	public void move(int x, int y){
-
+	public void move(int pos_X_One, int y){
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+			pos_X_One+=1f;
+			System.out.println("Good");
+		}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+			System.out.println("Ok");
+			pos_X_One-=1f;
+		}
+		this.setX((int)pos_X_One);
 	}
 
 	@Override
@@ -173,6 +237,15 @@ class Health implements GameStuff{
 		Texture texture=new Texture(Gdx.files.internal(this.name));
 		batch.draw(texture, this.x, this.y, this.width, this.height);
 	}
+
+	public String getName() {return name;}
+	public int getX() {return x;}
+
+	public int getY() {return y;}
+
+	public int getWidth() {return width;}
+
+	public int getHeight() {return height;}
 }
 class Healthbar extends Actor implements Characters{
 	private Health healthbar;
@@ -212,18 +285,32 @@ class Healthbar extends Actor implements Characters{
 	public String getName() {
 		return null;
 	}
+
+	@Override
+	public void setAll(int X, int Y, int width, int height){};
+
+	@Override
+	public void draw(SpriteBatch batch, float delta) {
+		Texture bob=new Texture(Gdx.files.internal(this.healthbar.getName()));
+		batch.draw(bob, this.healthbar.getX(), this.healthbar.getY(), this.healthbar.getWidth(), this.healthbar.getHeight());
+	}
 }
 public class MyGdxGame extends Game{
 	public SpriteBatch batch;
 	public static Characters player_One;
 	public static Characters player_Two;
+	public static Characters weapon_One;
+	public static Characters weapon_Two;
 	public Stage stage;
 	public static ArrayList<Tank> tankList;
+	public static ArrayList<Weapon> weaponList;
 	@Override
 	public void create() {
 		Gdx.graphics.setWindowedMode(800,600);
 		tankList=new ArrayList<Tank>();
+		weaponList=new ArrayList<Weapon>();
 		this.initialiseTank();
+		this.initialiseWeapons();
 		batch=new SpriteBatch();
 		stage=new Stage();
 		this.setScreen(new Tank_Intro(this));
@@ -233,7 +320,6 @@ public class MyGdxGame extends Game{
 	}
 	public void initialiseTank(){
 		Tank tank=new Tank("Basics/Abrams_Tank.png", 0,0,0,0);
-
 		tankList.add(tank);
 		tank=new Tank("Basics/Atomic_Tank.png", 0,0,0,0);
 		tankList.add(tank);
@@ -243,6 +329,19 @@ public class MyGdxGame extends Game{
 		tankList.add(tank);
 		tank=new Tank("Basics/Helios_Tank.png", 0,0,0,0);
 		tankList.add(tank);
+	}
+	public void initialiseWeapons(){
+		System.out.println("Weapon");
+		Weapon weapon=new Weapon("Basics/Bomb_One.png",0,0,0,0);
+		weaponList.add(weapon);
+		weapon=new Weapon("Basics/Bomb_Two.png",0,0,0,0);
+		weaponList.add(weapon);
+		weapon=new Weapon("Basics/Bomb_Three.png",0,0,0,0);
+		weaponList.add(weapon);
+		weapon=new Weapon("Basics/Bomb_Four.png",0,0,0,0);
+		weaponList.add(weapon);
+		weapon=new Weapon("Basics/Bomb_Five.png",0,0,0,0);
+		weaponList.add(weapon);
 	}
 	public void dispose(){
 		batch.dispose();

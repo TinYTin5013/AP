@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import com.badlogic.gdx.math.Rectangle;
-public class New_Game_Two extends ApplicationAdapter implements Screen {
+public class Weapon_One extends ApplicationAdapter implements Screen {
     private Texture bg;
     private Texture purple_bg;
     private SpriteBatch batch;
@@ -39,7 +39,7 @@ public class New_Game_Two extends ApplicationAdapter implements Screen {
     private Clickables reverse_arrow;
     private int i;
     private MyGdxGame parent;
-    public New_Game_Two(MyGdxGame parent){
+    public Weapon_One(MyGdxGame parent){
         this.parent=parent;
         batch=new SpriteBatch();
         stage=new Stage();
@@ -93,8 +93,8 @@ public class New_Game_Two extends ApplicationAdapter implements Screen {
         parent.batch.draw(current, ((450+800)/2)-75, 250, 125, 100);
         Back.draw(parent.batch, 1f);
         Play.draw(parent.batch, 1f);
-        parent.tankList.get(i).setAll(40, 125, 330, 250);
-        parent.tankList.get(i).draw(parent.batch, 1f);
+        parent.weaponList.get(i).setAll(40, 125, 330, 250);
+        parent.weaponList.get(i).draw(parent.batch, 1f);
         if(i<4) {
             arrow.draw(parent.batch, 1f);
         }
@@ -138,7 +138,7 @@ public class New_Game_Two extends ApplicationAdapter implements Screen {
                 logo.dispose();
                 tank_choice.dispose();
                 abrams.dispose();
-                parent.player_Two=new Tank_Creator().getInstance().createCharacters(parent.tankList.get(i).getName(), 2);
+                parent.weapon_One=new Weapon_Creator().getInstance().createCharacters(parent.tankList.get(i).getName(), 1);
                 parent.stage.dispose();
                 parent.stage=new Stage();
                 try{
@@ -146,7 +146,7 @@ public class New_Game_Two extends ApplicationAdapter implements Screen {
                 }catch (Exception e){
                     System.out.println(e);
                 }
-                parent.setScreen(new Weapon_One(parent));
+                parent.setScreen(new Ground(parent));
             }
         }
     }
