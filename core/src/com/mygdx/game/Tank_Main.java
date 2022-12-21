@@ -71,19 +71,27 @@ public class Tank_Main extends ApplicationAdapter implements Screen {
         logo.dispose();
         parent.stage.dispose();
         parent.stage=new Stage();
+        try{
+            Thread.sleep(200);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         parent.setScreen(new New_Game(parent));
     }
     public void openLoadGame(){
-//                bg.dispose();
-//                purple_bg.dispose();
-//                new_game.dispose();
-//                tank_child.dispose();
-//                logo.dispose();
-//                Vs_Computer.dispose();
-//                Vs_Friend.dispose();
-//                Back.dispose();
-//                parent.stage=new Stage();
-//                parent.setScreen(new Load_Game(parent));
+        bg.dispose();
+        purple_bg.dispose();
+        new_game.dispose();
+        logo.dispose();
+        parent.stage.dispose();
+        parent.stage=new Stage();
+        try{
+            Thread.sleep(200);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        parent.setScreen(new Load_Game(parent));
+
     }
     public void openSettings(){}
     public void render(){

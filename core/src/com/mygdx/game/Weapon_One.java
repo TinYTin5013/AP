@@ -138,7 +138,7 @@ public class Weapon_One extends ApplicationAdapter implements Screen {
                 logo.dispose();
                 tank_choice.dispose();
                 abrams.dispose();
-                parent.weapon_One=new Weapon_Creator().getInstance().createCharacters(parent.tankList.get(i).getName(), 1);
+                parent.weapon_One=new Weapon_Creator().getInstance().createCharacters(parent.weaponList.get(i).getName(), 1);
                 parent.stage.dispose();
                 parent.stage=new Stage();
                 try{

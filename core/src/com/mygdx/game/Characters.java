@@ -14,6 +14,6 @@ public interface Characters {
     public float getX();
     public float getY();
     public void setRun(int run);
-
+    public double getAngle();
     public int getRun();
 }

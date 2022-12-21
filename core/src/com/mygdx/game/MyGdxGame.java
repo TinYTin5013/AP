@@ -7,13 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import jdk.internal.icu.text.UnicodeSet;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
+import java.util.HashMap;
 
-class Weapon extends Actor implements Characters{
+class Weapon extends Actor implements Characters, Serializable{
 	private String name;
 	private int x;
 	private int y;
@@ -46,12 +45,14 @@ class Weapon extends Actor implements Characters{
 
 	@Override
 	public void setX(int x) {
-
+		this.x=x;
 	}
-
+	public String getName() {
+		return name;
+	}
 	@Override
 	public void setY(int y) {
-
+		this.y=y;
 	}
 
 	@Override
@@ -70,6 +71,11 @@ class Weapon extends Actor implements Characters{
 
 	@Override
 	public void setRun(int run) {}
+
+	@Override
+	public double getAngle() {
+		return 0;
+	}
 
 	@Override
 	public int getRun() {return 0;}
@@ -123,7 +129,7 @@ class Buttons extends Actor implements Clickables{
 		return height;
 	}
 }
-class Tank extends Actor implements Clickables, Characters, Runnable{
+class Tank extends Actor implements Clickables, Characters, Runnable, Serializable {
 	private String name;
 	private int x;
 	private int y;
@@ -132,7 +138,7 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 	private int health;
 	private double angle;
 	private int run;
-	public Tank(String name, int x, int y, int width, int height){
+	public Tank(String name, int x, int y, int width, int height) {
 		this.name=name;
 		this.x=x;
 		this.y=y;
@@ -150,11 +156,17 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 		if(this.run>0){
 			if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
 				pos_X_One+=1f;
-				this.run-=1f;
+				if(pos_X_One>800){
+					pos_X_One=800;
+				}else{
+					this.run-=1f;
+				}
 
 			}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
 				pos_X_One-=1f;
-				this.run-=1f;
+				if(pos_X_One<0){
+					pos_X_One=0;
+				}else {this.run-=1f;}
 			}
 			this.setX((int)pos_X_One);
 		}
@@ -175,6 +187,10 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 	@Override
 	public void damage() {
 
+	}
+
+	public double getAngle() {
+		return angle;
 	}
 
 	@Override
@@ -315,22 +331,34 @@ class Healthbar extends Actor implements Characters{
 	public void setRun(int run) {}
 
 	@Override
+	public double getAngle() {
+		return 0;
+	}
+
+	@Override
 	public int getRun() {return 0;}
 }
-public class MyGdxGame extends Game{
+public class MyGdxGame extends Game implements Serializable{
 	public SpriteBatch batch;
-	public static Characters player_One;
-	public static Characters player_Two;
-	public static Characters weapon_One;
-	public static Characters weapon_Two;
+	public Characters player_One;
+	public Characters player_Two;
+	public Characters weapon_One;
+	public Characters weapon_Two;
 	public Stage stage;
 	public static ArrayList<Tank> tankList;
 	public static ArrayList<Weapon> weaponList;
+	public static String fileOne;
+	public static String fileTwo;
+	public static String fileThree;
+	public static int file_int;
+	public HashMap<Integer, String> mapper;
 	@Override
 	public void create() {
+		file_int=1;
 		Gdx.graphics.setWindowedMode(800,600);
 		tankList=new ArrayList<Tank>();
 		weaponList=new ArrayList<Weapon>();
+		mapper=new HashMap<Integer, String>();
 		this.initialiseTank();
 		this.initialiseWeapons();
 		batch=new SpriteBatch();
@@ -353,7 +381,6 @@ public class MyGdxGame extends Game{
 		tankList.add(tank);
 	}
 	public void initialiseWeapons(){
-		System.out.println("Weapon");
 		Weapon weapon=new Weapon("Basics/Bomb_One.png",0,0,0,0);
 		weaponList.add(weapon);
 		weapon=new Weapon("Basics/Bomb_Two.png",0,0,0,0);
