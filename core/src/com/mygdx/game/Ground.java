@@ -40,10 +40,16 @@ public class Ground extends InputAdapter implements Screen {
     private float pos_X_One;
     private float pos_X_Two;
     private int playable;
+    private Texture toggle;
+    private Clickables power;
     private double thrownVelocity;
     private int fire;
+    private int level;
+    int flag;
     public Ground(MyGdxGame parent){
         this.parent=parent;
+        level=0;
+        flag=0;
         background=new Texture(Gdx.files.internal("Basics/Background.png"));
         versus=new Texture(Gdx.files.internal("Basics/Versus.png"));
         ground=new Texture(Gdx.files.internal("Basics/Terrain.png"));
@@ -54,10 +60,12 @@ public class Ground extends InputAdapter implements Screen {
         Pause=new Buttons("Basics/Pause.png", 50, 510, 50, 50);
         camera=new OrthographicCamera();
         Fire=new Buttons("Basics/Fire.png", 550, 50, 150, 100);
+        toggle=new Texture(Gdx.files.internal("Basics/toggle hover.png"));
         player_One=parent.player_One;
         player_Two=parent.player_Two;
         weapon_One=parent.weapon_One;
         weapon_Two=parent.weapon_Two;
+        power=new Buttons("Basics/loader_line.png", 250, 50, 150, 20);
         player_One.setAll(100, 175, 64, 64);
         player_Two.setAll(632, 175, 64, 64);
         pos_X_One=100;
@@ -70,6 +78,7 @@ public class Ground extends InputAdapter implements Screen {
         parent.stage.addActor(Pause);
         parent.stage.addActor(health_One);
         parent.stage.addActor(health_Two);
+        parent.stage.addActor((Actor) power);
         playable=1;
         Gdx.input.setInputProcessor(parent.stage);
     }
@@ -92,7 +101,10 @@ public class Ground extends InputAdapter implements Screen {
             if(Fire.isClicked((int)touch.x, 600-(int)touch.y)){
                 fire=1;
                 playable=3^playable;
-                System.out.println(playable);
+                return;
+            }
+            if(power.isClicked((int)touch.x, 600-(int)touch.y)){
+                level=(int)((touch.x-power.getX()));
             }
         }
     }
@@ -137,12 +149,14 @@ public class Ground extends InputAdapter implements Screen {
         parent.batch.draw(background, 0, 0, 800, 600);
         parent.batch.draw(versus,400-32, 500, 64, 64);
         parent.batch.draw(ground, 0, 0, 800, 200);
+        power.draw(parent.batch, 1f);
         Pause.draw(parent.batch, 1f);
         health_One.draw(parent.batch, 1f);
         health_Two.draw(parent.batch, 1f);
         player_One.draw(parent.batch, 1f);
         player_Two.draw(parent.batch, 1f);
         Fire.draw(parent.batch, 1f);
+        parent.batch.draw(toggle, 250+level,50, 20,20);
         parent.batch.end();
         if(Gdx.input.isTouched() && fire==0){
             Vector3 touch=new Vector3();
@@ -221,12 +235,61 @@ public class Ground extends InputAdapter implements Screen {
             game_Update(playable);
         }
         if(fire==1){
-
+            thrownVelocity=(level*(Math.sqrt(8000)))/150;
+            if(playable==2){
+                if(flag==1 && weapon_One.getY()<=175+64){
+                    fire=0;
+                    flag=0;
+                    player_Two.damage(weapon_One, health_Two);
+                    weapon_One.setAll((int)player_One.getX()+64, (int)player_One.getY()+50, 20, 20);
+                }else{
+                    parent.batch.begin();
+                    if(flag==0){
+                        storeOne=(int) (weapon_One.getX()+thrownVelocity*Math.cos(Math.toRadians(player_One.getAngle()))*Gdx.graphics.getDeltaTime());
+                        storeTwo=(int) (weapon_One.getY()+thrownVelocity*Math.sin(Math.toRadians(player_One.getAngle()))*Gdx.graphics.getDeltaTime());
+                        weapon_One.setAll(storeOne, storeTwo, 20,20);
+                        weapon_One.draw(parent.batch, 1f);
+                        if(storeTwo>=thrownVelocity*thrownVelocity*Math.pow(Math.sin(Math.toRadians(weapon_One.getAngle())),2)*0.05){
+                            flag=1;
+                        }
+                    }else if(flag==1){
+                        storeOne=(int) (weapon_One.getX()+thrownVelocity*Math.cos(Math.toRadians(player_One.getAngle()))*Gdx.graphics.getDeltaTime());
+                        storeTwo=(int) (weapon_One.getY()-thrownVelocity*Math.sin(Math.toRadians(player_One.getAngle()))*Gdx.graphics.getDeltaTime());
+                        weapon_One.setAll(storeOne, storeTwo, 20,20);
+                        weapon_One.draw(parent.batch, 1f);
+                    }
+                    parent.batch.end();
+                }
+            }else if(playable==1) {
+                if (flag == 1 && weapon_Two.getY() <= 175+64) {
+                    fire = 0;
+                    flag = 0;
+                    player_One.damage(weapon_Two, health_One);
+                    weapon_Two.setAll((int) player_Two.getX(), (int) player_Two.getY() + 50, 20, 20);;
+                } else {
+                    parent.batch.begin();
+                    if (flag == 0) {
+                        storeOne = (int) (weapon_Two.getX() + thrownVelocity * (Math.cos(Math.toRadians(player_Two.getAngle()))) * Gdx.graphics.getDeltaTime());
+                        storeTwo = (int) (weapon_Two.getY() + thrownVelocity * (Math.sin(Math.toRadians(player_Two.getAngle()))) * Gdx.graphics.getDeltaTime());
+                        weapon_Two.setAll(storeOne, storeTwo, 20, 20);
+                        weapon_Two.draw(parent.batch, 1f);
+                        if(storeTwo>=thrownVelocity*thrownVelocity*Math.pow(Math.sin(Math.toRadians(weapon_Two.getAngle())),2)*0.05){
+                            flag=1;
+                        }
+                    } else if (flag == 1) {
+                        storeOne = (int) (weapon_Two.getX() + thrownVelocity * (Math.cos(Math.toRadians(player_Two.getAngle()))) * Gdx.graphics.getDeltaTime());
+                        storeTwo = (int) (weapon_Two.getY() - thrownVelocity * (Math.sin(Math.toRadians(player_Two.getAngle()))) * Gdx.graphics.getDeltaTime());
+                        weapon_Two.setAll(storeOne, storeTwo, 20, 20);
+                        weapon_Two.draw(parent.batch, 1f);
+                    }
+                    parent.batch.end();
+                }
+            }
         }
-//        if(this.player_One()){
-//            parent.batch.begin();
-//            parent.batch.end();
-//        }
+        if(health_One.getHealthbar().getWidth()<1 || health_Two.getHealthbar().getWidth()<1){
+            parent.batch.begin();
+            parent.batch.end();
+        }
         if(pause==true){
             parent.batch.begin();
             Color c=parent.batch.getColor();

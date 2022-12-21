@@ -29,6 +29,10 @@ public class Weapon_Two extends ApplicationAdapter implements Screen {
     private Texture tank_choice;
     private OrthographicCamera camera;
     private Texture abrams;
+    private Texture Bomb_One_current;
+    private Texture Bomb_Two_current;
+    private Texture Bomb_Three_current;
+    private Texture Bomb_Four_current;
     private Clickables tank_child;
     private Texture current;
     private Buttons Back;
@@ -51,7 +55,10 @@ public class Weapon_Two extends ApplicationAdapter implements Screen {
         logo=new Texture(Gdx.files.internal("Basics/Logo_Bland.png"));
         tank_choice=new Texture(Gdx.files.internal("Basics/Tank_Choice.png"));
         tank_child=new Buttons("Basics/Abrams_Tank.png", 40, 125, 330, 250);
-        current=new Texture(Gdx.files.internal("Basics/Current.png"));
+        Bomb_One_current=new Texture(Gdx.files.internal("Basics/Bomb_One_Current.jpeg"));
+        Bomb_Two_current=new Texture(Gdx.files.internal("Basics/Bomb_Two_Current.jpeg"));
+        Bomb_Three_current=new Texture(Gdx.files.internal("Basics/Bomb_Current_Five.jpeg"));
+        Bomb_Four_current=new Texture(Gdx.files.internal("Basics/Bomb_Four_Current.jpeg"));
         camera=new OrthographicCamera();
         Play=new Buttons("Basics/Play.png",((450+800)/2) -110, 100, 250, 100);
         Back=new Buttons("Basics/BackButton.png",0, 510, 80, 80);
@@ -90,7 +97,17 @@ public class Weapon_Two extends ApplicationAdapter implements Screen {
         parent.batch.draw(purple_bg, 450,0, 350, 600);
         parent.batch.draw(tank_choice, ((450+800)/2)-150, 350, 300, 100);
         parent.batch.draw(abrams, 225-125, 425, 250, 100);
-        parent.batch.draw(current, ((450+800)/2)-75, 250, 125, 100);
+        if(i==0){
+            parent.batch.draw(Bomb_One_current, ((450+800)/2)-75, 250, 125, 100);
+        }else if(i==1){
+            parent.batch.draw(Bomb_Two_current, ((450+800)/2)-75, 250, 125, 100);
+        }else if(i==2){
+            parent.batch.draw(Bomb_Three_current, ((450+800)/2)-75, 250, 125, 100);
+        }else if(i==3){
+            parent.batch.draw(Bomb_Four_current, ((450+800)/2)-75, 250, 125, 100);
+        }else if(i==4){
+            parent.batch.draw(Bomb_Three_current, ((450+800)/2)-75, 250, 125, 100);
+        }
         Back.draw(parent.batch, 1f);
         Play.draw(parent.batch, 1f);
         parent.weaponList.get(i).setAll(135, 215, 150, 150);

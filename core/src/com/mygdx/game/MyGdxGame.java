@@ -35,8 +35,14 @@ class Weapon extends Actor implements Characters, Serializable{
 	public int aim(float x, float y) {return 0;}
 
 	@Override
-	public void damage() {
+	public void damage(Characters w1, Characters h1) {
 
+	}
+	public int collided(Tank t1){
+		if(t1.getX()-t1.getWidth()/2<=x && t1.getX()+t1.getWidth()/2>=x && t1.getY()+t1.getHeight()/2>=y && t1.getY()-t1.getHeight()/2<=y){
+			return 1;
+		}
+		return 0;
 	}
 
 	public void setDamage(int damage) {
@@ -79,6 +85,11 @@ class Weapon extends Actor implements Characters, Serializable{
 
 	@Override
 	public int getRun() {return 0;}
+
+	@Override
+	public GameStuff getHealthbar() {
+		return null;
+	}
 }
 class Buttons extends Actor implements Clickables{
 	String name;
@@ -185,8 +196,10 @@ class Tank extends Actor implements Clickables, Characters, Runnable, Serializab
 
 	}
 	@Override
-	public void damage() {
-
+	public void damage(Characters w1, Characters h1) {
+		if(w1.getX()<=this.getX()+this.getWidth() && w1.getX()>=this.getX()){
+			h1.getHealthbar().decrease(20);
+		}
 	}
 
 	public double getAngle() {
@@ -206,6 +219,11 @@ class Tank extends Actor implements Clickables, Characters, Runnable, Serializab
 	public void setRun(int run) {this.run = run;}
 
 	public int getRun() {return run;}
+
+	@Override
+	public GameStuff getHealthbar() {
+		return null;
+	}
 
 	public void draw(SpriteBatch batch, float delta){
 		Texture texture=new Texture(Gdx.files.internal(this.name));
@@ -266,7 +284,9 @@ class Health implements GameStuff{
 		this.height=height;
 	}
 	@Override
-	public void decrease(int health) {};
+	public void decrease(int health) {
+		this.width-=health;
+	};
 	public void draw(SpriteBatch batch, float delta){
 		Texture texture=new Texture(Gdx.files.internal(this.name));
 		batch.draw(texture, this.x, this.y, this.width, this.height);
@@ -299,9 +319,11 @@ class Healthbar extends Actor implements Characters{
 	public int aim(float x, float y) {return 0;}
 
 	@Override
-	public void damage() {
+	public void damage(Characters w1, Characters h1) {
 
 	}
+
+
 
 	@Override
 	public void setX(int x) {

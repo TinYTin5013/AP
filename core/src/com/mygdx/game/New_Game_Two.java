@@ -31,6 +31,11 @@ public class New_Game_Two extends ApplicationAdapter implements Screen {
     private Texture abrams;
     private Clickables tank_child;
     private Texture current;
+    private Texture abrams_current;
+    private Texture atom_current;
+    private Texture frost_current;
+    private Texture mark_current;
+    private Texture helios_current;
     private Buttons Back;
     private Clickables Play;
     private Tank tim;
@@ -51,7 +56,11 @@ public class New_Game_Two extends ApplicationAdapter implements Screen {
         logo=new Texture(Gdx.files.internal("Basics/Logo_Bland.png"));
         tank_choice=new Texture(Gdx.files.internal("Basics/Tank_Choice.png"));
         tank_child=new Buttons("Basics/Abrams_Tank.png", 40, 125, 330, 250);
-        current=new Texture(Gdx.files.internal("Basics/Current.png"));
+        abrams_current=new Texture(Gdx.files.internal("Basics/Abrams_Current.png"));
+        atom_current=new Texture(Gdx.files.internal("Basics/Atom_Current.jpeg"));
+        frost_current=new Texture(Gdx.files.internal("Basics/Frost_Current.jpeg"));
+        mark_current=new Texture(Gdx.files.internal("Basics/Mark_Current.jpeg"));
+        helios_current=new Texture(Gdx.files.internal("Basics/Helios_Current.jpeg"));
         camera=new OrthographicCamera();
         Play=new Buttons("Basics/Play.png",((450+800)/2) -110, 100, 250, 100);
         Back=new Buttons("Basics/BackButton.png",0, 510, 80, 80);
@@ -90,7 +99,17 @@ public class New_Game_Two extends ApplicationAdapter implements Screen {
         parent.batch.draw(purple_bg, 450,0, 350, 600);
         parent.batch.draw(tank_choice, ((450+800)/2)-150, 350, 300, 100);
         parent.batch.draw(abrams, 225-125, 425, 250, 100);
-        parent.batch.draw(current, ((450+800)/2)-75, 250, 125, 100);
+        if(i==0){
+            parent.batch.draw(abrams_current, ((450+800)/2)-75, 250, 125, 100);
+        }else if(i==1){
+            parent.batch.draw(atom_current, ((450+800)/2)-75, 250, 125, 100);
+        }else if(i==2){
+            parent.batch.draw(mark_current, ((450+800)/2)-75, 250, 125, 100);
+        }else if(i==3){
+            parent.batch.draw(frost_current, ((450+800)/2)-75, 250, 125, 100);
+        }else if(i==4){
+            parent.batch.draw(helios_current, ((450+800)/2)-75, 250, 125, 100);
+        }
         Back.draw(parent.batch, 1f);
         Play.draw(parent.batch, 1f);
         parent.tankList.get(i).setAll(40, 125, 330, 250);
