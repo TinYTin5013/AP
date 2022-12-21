@@ -18,6 +18,7 @@ public class Ground extends InputAdapter implements Screen {
     private Texture versus;
     private Buttons Pause;
     private OrthographicCamera camera;
+    private int angle;
     private int game_status;
     private boolean pause;
     private Healthbar health_One;
@@ -25,9 +26,9 @@ public class Ground extends InputAdapter implements Screen {
     private Characters player_One;
     private Characters player_Two;
     private MyGdxGame parent;
-    float pos_X_One;
-    float pos_X_Two;
-    int player;
+    private float pos_X_One;
+    private float pos_X_Two;
+    private int playable;
     public Ground(MyGdxGame parent){
         this.parent=parent;
         background=new Texture(Gdx.files.internal("Basics/Background.png"));
@@ -50,6 +51,7 @@ public class Ground extends InputAdapter implements Screen {
         parent.stage.addActor(Pause);
         parent.stage.addActor(health_One);
         parent.stage.addActor(health_Two);
+        playable=1;
         Gdx.input.setInputProcessor(parent.stage);
     }
     public void render(){
@@ -69,10 +71,15 @@ public class Ground extends InputAdapter implements Screen {
         }if(player==1){
             player_One.move((int)pos_X_One, 0);
             pos_X_One=player_One.getX();
+            if(Gdx.input.isTouched()){
+            angle=player_One.aim((int)touch.x, 600-(int)touch.y);
+            }
         }else if(player==2){
             player_Two.move((int)pos_X_Two, 0);
             pos_X_Two=player_Two.getX();
-            System.out.println(Gdx.graphics.getDeltaTime());
+            if(Gdx.input.isTouched()){
+                angle=player_Two.aim((int)touch.x, 600-(int)touch.y);
+            }
         }
         }
 
@@ -123,11 +130,11 @@ public class Ground extends InputAdapter implements Screen {
                     }
                 }
             }else if(pause==false){
-                game_Update(2);
+                game_Update(playable);
             }
         }
         if(pause==false){
-            game_Update(2);
+            game_Update(playable);
         }
 //        if(this.player_One()){
 //            parent.batch.begin();

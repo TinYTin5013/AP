@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import com.badlogic.gdx.math.Rectangle;
-public class Weapon_One extends ApplicationAdapter implements Screen {
+public class Weapon_Two extends ApplicationAdapter implements Screen {
     private Texture bg;
     private Texture purple_bg;
     private SpriteBatch batch;
@@ -39,11 +39,11 @@ public class Weapon_One extends ApplicationAdapter implements Screen {
     private Clickables reverse_arrow;
     private int i;
     private MyGdxGame parent;
-    public Weapon_One(MyGdxGame parent){
+    public Weapon_Two(MyGdxGame parent){
         this.parent=parent;
         batch=new SpriteBatch();
         stage=new Stage();
-        int i=0;
+        i=0;
         bg=new Texture(Gdx.files.internal("Basics/Blue_Bg.png"));
         arrow=new Buttons("Basics/Arrow.png", 690, 260, 100,100);
         reverse_arrow=new Buttons("Basics/Reverse_Arrow.png", 450, 260, 100,100);
@@ -138,7 +138,7 @@ public class Weapon_One extends ApplicationAdapter implements Screen {
                 logo.dispose();
                 tank_choice.dispose();
                 abrams.dispose();
-                parent.weapon_One=new Weapon_Creator().getInstance().createCharacters(parent.tankList.get(i).getName(), 1);
+                parent.weapon_Two=new Weapon_Creator().getInstance().createCharacters(parent.tankList.get(i).getName(), 1);
                 parent.stage.dispose();
                 parent.stage=new Stage();
                 try{
@@ -146,7 +146,7 @@ public class Weapon_One extends ApplicationAdapter implements Screen {
                 }catch (Exception e){
                     System.out.println(e);
                 }
-                parent.setScreen(new Weapon_Two(parent));
+                parent.setScreen(new Ground(parent));
             }
         }
     }

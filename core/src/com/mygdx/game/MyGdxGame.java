@@ -33,9 +33,7 @@ class Weapon extends Actor implements Characters{
 	}
 
 	@Override
-	public void aim(int x, int y) {
-
-	}
+	public int aim(float x, float y) {return 0;}
 
 	@Override
 	public void damage() {
@@ -69,6 +67,12 @@ class Weapon extends Actor implements Characters{
 		Texture texture=new Texture(Gdx.files.internal(this.name));
 		batch.draw(texture, this.x, this.y, this.width, this.height);
 	}
+
+	@Override
+	public void setRun(int run) {}
+
+	@Override
+	public int getRun() {return 0;}
 }
 class Buttons extends Actor implements Clickables{
 	String name;
@@ -135,28 +139,38 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 		this.width=width;
 		this.height=height;
 		this.health=100;
+		this.run=80;
+		this.angle=45;
 	}
-
 	@Override
 	public boolean isClicked(int x, int y) {
 		return false;
 	}
 	public void move(int pos_X_One, int y){
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			pos_X_One+=1f;
-			System.out.println("Good");
-		}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			System.out.println("Ok");
-			pos_X_One-=1f;
+		if(this.run>0){
+			if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+				pos_X_One+=1f;
+				this.run-=1f;
+
+			}else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+				pos_X_One-=1f;
+				this.run-=1f;
+			}
+			this.setX((int)pos_X_One);
 		}
-		this.setX((int)pos_X_One);
 	}
 
 	@Override
-	public void aim(int x, int y) {
-		double test=Math.tanh((y-this.y)/(x-this.x));
-		if(test>180){return;}
-		this.angle=test;
+	public int aim(float x, float y) {
+		double test=this.angle;
+		if(this.getY()>y){return (int)this.angle;}
+		try{
+			test=(90/57.29577945897575)*Math.toDegrees(Math.tanh((y-(this.getY()+(this.getHeight()/2)))/(x-(this.getX()+(this.getWidth()/2)))));
+			this.angle=test;
+		}finally {
+			return (int)test;
+		}
+
 	}
 	@Override
 	public void damage() {
@@ -172,6 +186,10 @@ class Tank extends Actor implements Clickables, Characters, Runnable{
 	public void setY(int y) {
 		this.y=y;
 	}
+
+	public void setRun(int run) {this.run = run;}
+
+	public int getRun() {return run;}
 
 	public void draw(SpriteBatch batch, float delta){
 		Texture texture=new Texture(Gdx.files.internal(this.name));
@@ -262,9 +280,7 @@ class Healthbar extends Actor implements Characters{
 	}
 
 	@Override
-	public void aim(int x, int y) {
-
-	}
+	public int aim(float x, float y) {return 0;}
 
 	@Override
 	public void damage() {
@@ -294,6 +310,12 @@ class Healthbar extends Actor implements Characters{
 		Texture bob=new Texture(Gdx.files.internal(this.healthbar.getName()));
 		batch.draw(bob, this.healthbar.getX(), this.healthbar.getY(), this.healthbar.getWidth(), this.healthbar.getHeight());
 	}
+
+	@Override
+	public void setRun(int run) {}
+
+	@Override
+	public int getRun() {return 0;}
 }
 public class MyGdxGame extends Game{
 	public SpriteBatch batch;
