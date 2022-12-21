@@ -89,8 +89,6 @@ public class Ground extends InputAdapter implements Screen {
         }
         if(Gdx.input.isTouched()){
             angle=p1.aim((int)touch.x, 600-(int)touch.y);
-            storeOne=(int) (touch.x-p1.getX());
-            storeTwo=600-(int) (touch.y-p1.getY());
             if(Fire.isClicked((int)touch.x, 600-(int)touch.y)){
                 fire=1;
                 playable=3^playable;
